@@ -82,7 +82,7 @@ set-BatchDlSkipPolicy -Path ".\Users.csv"
 3. Retrieves their distribution groups.
 4. Creates inbox rules for each group if they don’t already exist.
 5. Handles errors gracefully without stopping the batch process.
-
+6. Created a log with time stamp named datetime_batchdlrulelog.txt
 ---
 
 ## Usage
@@ -115,6 +115,4 @@ set-BatchDlSkipPolicy -Path ".\Users.csv"
 
 - Rules are created using `-Force` to avoid prompts.
 - Existing rules with the same name are skipped.
-- The script can be modified to **hide rules** in Outlook by adding `-HiddenFromUser` in the `New-InboxRule` cmdlet.
-- Logging can be added for batch processing if needed.
 - Ideal for automating self-sent email management for mult
