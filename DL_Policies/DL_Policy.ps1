@@ -1,3 +1,4 @@
+
 function get-userDL {
     param(
         [Parameter(Mandatory)]
@@ -29,37 +30,46 @@ function set-DlSkipPolicy {
     }
 }
 
-function set-BatchDlSkipPolicy{
+function set-BatchDlSkipPolicy {
     param(
         [Parameter(Mandatory)]
         [string]$path
     )
 
+    $date = Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
+
+    $logPath = "${date}_BatchDLRuleLog.txt"
+    Start-Transcript -Path $logPath -Append
+
     $users = Import-Csv -Path $path
 
     if (-not (Test-Path $Path)) {
-    Throw "CSV file not found at path: $Path"
-}
+        Throw "CSV file not found at path: $Path"
+    }
 
     foreach ($user in $users) {
-    $userName = $user.UserName
-    Write-Host "`nProcessing user: $userName"
+        $userName = $user.UserName
+        Write-Host "`nProcessing user: $userName"
 
-    try {
-        # Get distribution groups for the user
-        $userGroups = Get-UserDL -UserName $userName
+        try {
+            # Get distribution groups for the user
+            $userGroups = Get-UserDL -UserName $userName
 
-        if ($userGroups.Count -gt 0) {
-            # Set inbox rules for each group
-            Set-DLSkipPolicy -UserName $userName -UserGroups $userGroups
-        } else {
-            Write-Host "No distribution groups found for $userName"
+            if ($userGroups.Count -gt 0) {
+                # Set inbox rules for each group
+                Set-DLSkipPolicy -UserName $userName -UserGroups $userGroups
+            }
+            else {
+                Write-Host "No distribution groups found for $userName"
+            }
+        }
+        catch {
+            Write-Warning "Failed to process $userName. Error: $_"
         }
     }
-    catch {
-        Write-Warning "Failed to process $userName. Error: $_"
-    }
-}
+
+    Stop-Transcript
 
 }
+
 
