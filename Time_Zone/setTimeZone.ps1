@@ -1,15 +1,17 @@
 function setTimeZone() {
   
-    Write-Host "Select a TimeZone:"
-    Write-Host "1. Mountain Standard Time"
-    Write-Host "2. Eastern Standard Time"
+   Write-Host "Select a TimeZone:"
+    Write-Host "1. Eastern Standard Time"
+    Write-Host "2. Central Standard Time (Texas)"
+    Write-Host "3. Mountain Standard Time"
 
     # Get user selection
     $selection = Read-Host "Enter the number of your choice"
 
     switch ($selection) {
-        "1" { $timeZone = "Mountain Standard Time" }
-        "2" { $timeZone = "Eastern Standard Time" }
+        "1" { $timeZone = "Eastern Standard Time" }
+        "2" { $timeZone = "Central Standard Time" }  # Texas
+        "3" { $timeZone = "Mountain Standard Time" }
         default { 
             Write-Error "Invalid selection. Exiting."
             return
